@@ -60,11 +60,11 @@ export const AlbumImg = styled.img`
 `;
 
 export const AlbumInfo = styled.div`
-    /* margin: 50px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 
     span {
         font-size: 14px;

@@ -25,9 +25,10 @@ export const BackContainer = styled.div`
 `;
 
 export const AlbumContainer = styled.div`
-    margin: 40px 200px 0 200px;
+    margin: 40px 150px 0 200px;
     display: flex;
     flex-direction: row;
+    max-width: 1200px;
 `;
 
 export const Capa = styled.div`
@@ -38,4 +39,41 @@ export const Capa = styled.div`
 
 export const CapaImg = styled.img`
     margin-bottom: 20px;
+`;
+
+export const TrackContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+`;
+
+export const Tracks = styled.div`
+    padding-left: 50px;
+    display: flex;
+    flex: 1;
+`;
+
+export const TrackList = styled.ul`
+
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    li {
+        padding: 0 0 20px 0;
+    }
+
+`;
+
+export const TrackNumber = styled.span`
+    padding: 0 20px 0 0;
+`;
+
+export const TrackName = styled.span`
+    color: #FAFAFA;
+    font-weight: 500;
+`;
+
+export const TrackTime = styled.span`
+    
 `;
