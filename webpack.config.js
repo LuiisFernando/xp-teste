@@ -3,10 +3,14 @@ module.exports = {
     entry: path.resolve(__dirname, 'src', 'index.js'),
     output: {
         path: path.resolve(__dirname, 'public'),
-        filename: 'bundle.js'
+        filename: 'bundle.js',
+        publicPath: '/',
     },
     devServer: {
-        contentBase: path.resolve(__dirname, 'public')
+        contentBase: path.resolve(__dirname, 'public'),
+        publicPath: '/',
+        historyApiFallback: true,
+        port: 8080
     },
     module: {
         rules: [
@@ -23,11 +27,16 @@ module.exports = {
                     { loader: 'css-loader' }
                 ]
             }, {
-                test: /.*\.(gif|png|jpe?g)$/i,
-                use: {
-                    loader: 'file-loader'
-                }
-            }
+                test: /\.(png|svg|jpg|gif)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[path][name].[hash].[ext]'
+                        }
+                    }
+                ],
+            },
         ]
     }
 }
