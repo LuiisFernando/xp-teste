@@ -37,6 +37,19 @@ export const Capa = styled.div`
     align-items: center;
 `;
 
+export const ArtistTitle = styled.span`
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #FAFAFA;
+`;
+
+export const AlbumTitle = styled.span`
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: center;
+`;
+
 export const CapaImg = styled.img`
     margin-bottom: 20px;
 `;

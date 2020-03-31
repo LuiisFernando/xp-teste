@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-
+import { useDispatch } from 'react-redux';
+import { Formik, Form, Field } from 'formik';
 import SpotifyWebApi from 'spotify-web-api-js';
 import { toast } from "react-toastify";
+
+import { AddAlbumSearched } from '../../redux/modules/albums/actions';
 
 import icon from '../../assets/icon2.png';
 import { store } from '../../redux';
@@ -12,18 +15,28 @@ import {
     Image,
     SearchContainer,
     Title,
-    RecentsSearch,
+    ArtistContainer,
     Grid,
     AlbumImg,
-    AlbumInfo
+    AlbumInfo,
+    ArtistTitle,
+    AlbumTitle
 } from './styles';
 
 export default function Principal() {
     const history = useHistory();
+    const dispatch = useDispatch();
+    const [albumsSearched, setAlbumsSearched] = useState([]);
     const [albums, setAlbums] = useState([]);
     const [musics, setMusics] = useState([]);
+    const [artistSearched, setArtistSearched] = useState('');
+    const [recentVisible, setRecentVisible] = useState(false);
 
     const spotify = new SpotifyWebApi();
+
+    const initialValues = {
+        inputArtist: ''
+    }
 
     useEffect(() => {
 
@@ -32,12 +45,10 @@ export default function Principal() {
                 const token = store.getState().token;
 
                 if (token && token.token) {
-                    console.log('token localizado', token.token);
                     spotify.setAccessToken(token.token);
-
                     const me = await spotify.getMe();
-                    console.log(me)
                 } else {
+                    toast.error('Token não localizado!');
                     history.push('/');
                 }
             } catch (err) {
@@ -46,7 +57,17 @@ export default function Principal() {
             }
         }
 
-        //loadToken();
+        function loadAlbum() {
+            const { albums } = store.getState().album;
+
+            if (albums) {
+                setAlbumsSearched(albums);
+                setRecentVisible(true);
+            }
+        }
+
+        loadToken();
+        loadAlbum();
     }, []);
 
     async function Search(text) {
@@ -81,6 +102,7 @@ export default function Principal() {
                     }
                 })
                 setMusics(musicsMapped);
+                setRecentVisible(false);
     
             } else {
                 setAlbums([]);
@@ -92,8 +114,15 @@ export default function Principal() {
         
     }
 
-    function handlePage(albumId) {
-        history.push(`/album/${albumId}`)
+    function handlePage(album) {
+        dispatch(AddAlbumSearched(album));
+        const id = album.album_id ? album.album_id : album.id;
+        history.push(`/album/${id}`)
+    }
+
+    function handleSubmit({ inputArtist }) {
+        setArtistSearched(inputArtist);
+        Search(inputArtist);
     }
 
     return (
@@ -101,33 +130,59 @@ export default function Principal() {
             <Image src={icon} alt="icon" />
 
             <SearchContainer>
-                <label htmlFor="inputArtist">Busque por artistas, albuns ou músicas</label>
-                <input type="text" autoComplete="off" placeholder="Comece a escrever ..." id="inputArtist" onChange={(e) => Search(e.target.value)} />
+                <Formik
+                    initialValues={initialValues}
+                    onSubmit={handleSubmit}
+                >
+                    <Form>
+                        <Field 
+                            name="inputArtist"
+                            children={({ field }) => (
+                                <input 
+                                    type="text"
+                                    {...field}
+                                    autoComplete="off"
+                                    placeholder="Comece a escrever ..." 
+                                />
+                            )}
+                        />
+                    </Form>
+                </Formik>
             </SearchContainer>
-            <RecentsSearch>
+            <ArtistContainer visible={recentVisible}>
                 <Title>Álbuns buscados recentemente</Title>
-                
+                <Grid>
+                    {albumsSearched && albumsSearched.map((album, index) => (
+                        <AlbumInfo key={index} onClick={() => handlePage(album)}>
+                            <AlbumImg src={album.image[1].url} alt={`album-img-1`} />
+                            <ArtistTitle>{album.name}</ArtistTitle>
+                            <AlbumTitle>{album.artista.name}</AlbumTitle>
+                        </AlbumInfo>
+                    ))}
+                </Grid>
+            </ArtistContainer>
+            <ArtistContainer visible={!recentVisible}>
+                {console.log('recent Visible', recentVisible)}
+                <Title>{`Resultados encontrados para "${artistSearched}"`}</Title>
                 <Grid>
                     {albums && albums.map((album) => (
-                        <AlbumInfo key={album.id} onClick={() => handlePage(album.id)}>
-                            <AlbumImg src={album.image[1].url} width="100" height="100" alt={`album-img-1`} />
-                            <span>{album.name}</span>
-                            <span>{album.artista.name}</span>
-                            {/* <span>{album.preview_url}</span> */}
+                        <AlbumInfo key={album.id} onClick={() => handlePage(album)}>
+                            <AlbumImg src={album.image[1].url} alt={`album-img-1`} />
+                            <ArtistTitle>{album.name}</ArtistTitle>
+                            <AlbumTitle>{album.artista.name}</AlbumTitle>
                         </AlbumInfo>
                     ))}
                 </Grid>
                 <Grid>
                     {musics && musics.map((album, index) => (
-                        <AlbumInfo key={index} onClick={() => handlePage(album.album_id)}>
-                            <AlbumImg src={album.image[1].url} width="100" height="100" alt={`album-img-1`} />
-                            <span>{album.name}</span>
-                            <span>{album.artista.name}</span>
-                            <span>{album.album_id}</span>
+                        <AlbumInfo key={index} onClick={() => handlePage(album)}>
+                            <AlbumImg src={album.image[1].url} alt={`album-img-1`} />
+                            <ArtistTitle>{album.name}</ArtistTitle>
+                            <AlbumTitle>{album.artista.name}</AlbumTitle>
                         </AlbumInfo>
                     ))}
                 </Grid>
-            </RecentsSearch>
+            </ArtistContainer>
         </Container>
     );
 }

@@ -19,12 +19,16 @@ export const Image = styled.img`
 
 export const Title = styled.span`
     margin-bottom: 30px;
+    font-size: 24px;
+    color: #FAFAFA;
 `;
 
 export const SearchContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: 20px 200px 0 200px;
+    form {
+        display: flex;
+        flex-direction: column;
+        margin: 20px 200px 0 200px;
+    }
 
     label {
         font-size: 16px;
@@ -43,15 +47,13 @@ export const SearchContainer = styled.div`
     }
 `;
 
-export const RecentsSearch = styled.div`
-    display: flex;
+export const ArtistContainer = styled.div`
+    /* display: flex; */
     flex-direction: column;
     margin: 100px 200px 0 200px;
-
-    span {
-        font-size: 24px;
-    }
+    display: ${props => (props.visible ? 'flex' : 'none')};
 `;
+
 
 export const AlbumImg = styled.img`
     width: 150px;
@@ -64,13 +66,22 @@ export const AlbumInfo = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 150px;
+    max-width: 150px;
     cursor: pointer;
+`;
 
-    span {
-        font-size: 14px;
-        margin-bottom: 10px;
-        align-self: center;
-    }
+export const ArtistTitle = styled.span`
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #FAFAFA;
+`;
+
+export const AlbumTitle = styled.span`
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: center;
 `;
 
 export const Grid = styled.div`

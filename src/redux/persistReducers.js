@@ -6,7 +6,7 @@ export default reducers => {
     {
       key: 'xp-teste',
       storage,
-      whitelist: ['token']
+      whitelist: ['token', 'album']
     },
     reducers
   );
