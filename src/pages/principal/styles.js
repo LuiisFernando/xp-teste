@@ -4,10 +4,6 @@ export const Container = styled.div`
     display: flex;
     flex: 1;
     flex-direction: column;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
 `;
 
 export const Image = styled.img`
@@ -27,7 +23,7 @@ export const SearchContainer = styled.div`
     form {
         display: flex;
         flex-direction: column;
-        margin: 20px 200px 0 200px;
+        margin: 0 200px 0 200px;
     }
 
     label {
