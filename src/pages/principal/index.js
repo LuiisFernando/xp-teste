@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
@@ -6,6 +6,7 @@ import SpotifyWebApi from 'spotify-web-api-js';
 import { toast } from "react-toastify";
 
 import { AddAlbumSearched } from '../../redux/modules/albums/actions';
+import { setSearching,  resetSearching } from '../../redux/modules/searching/actions';
 
 import icon from '../../assets/icon2.png';
 import { store } from '../../redux';
@@ -26,6 +27,7 @@ import {
 export default function Principal() {
     const history = useHistory();
     const dispatch = useDispatch();
+    const formikRef = useRef(null);
     const [albumsSearched, setAlbumsSearched] = useState([]);
     const [albums, setAlbums] = useState([]);
     const [musics, setMusics] = useState([]);
@@ -57,25 +59,38 @@ export default function Principal() {
             }
         }
 
-        function loadAlbum() {
+        function loadAlbumAndSearch() {
             const { albums } = store.getState().album;
+            const { text } = store.getState().searching;
 
             if (albums) {
                 setAlbumsSearched(albums);
                 setRecentVisible(true);
             }
+
+            if (text) {
+                Search(text);
+                formikRef.current.setFieldValue('inputArtist', text);
+            }
         }
 
         loadToken();
-        loadAlbum();
+        loadAlbumAndSearch();
     }, []);
+
+    function reset() {
+        if (formikRef.current) {
+            formikRef.current.setFieldValue('inputArtist', '');
+            setRecentVisible(true);
+            dispatch(resetSearching());
+        }
+    }
 
     async function Search(text) {
         try {
             if (text) {
 
                 const albumm = await spotify.searchAlbums(text);
-    
     
                 const albumMapped = albumm.albums.items.map(album => {
                     return {
@@ -103,7 +118,7 @@ export default function Principal() {
                 })
                 setMusics(musicsMapped);
                 setRecentVisible(false);
-    
+                setArtistSearched(text);
             } else {
                 setAlbums([]);
             }
@@ -121,8 +136,8 @@ export default function Principal() {
     }
 
     function handleSubmit({ inputArtist }) {
-        setArtistSearched(inputArtist);
         Search(inputArtist);
+        dispatch(setSearching(inputArtist));
     }
 
     return (
@@ -133,20 +148,25 @@ export default function Principal() {
                 <Formik
                     initialValues={initialValues}
                     onSubmit={handleSubmit}
+                    enableReinitialize
+                    innerRef={formikRef}
                 >
-                    <Form>
-                        <Field 
-                            name="inputArtist"
-                            children={({ field }) => (
-                                <input 
-                                    type="text"
-                                    {...field}
-                                    autoComplete="off"
-                                    placeholder="Comece a escrever ..." 
-                                />
-                            )}
-                        />
-                    </Form>
+                    {({ values, setFieldValue }) =>(
+                        <Form>
+                            <Field 
+                                name="inputArtist"
+                                type="text"
+                                autoComplete="off"
+                                placeholder="Comece a escrever ..."
+                                onChange={(e) => {
+                                    if (!e.target.value) {
+                                        reset();
+                                    }
+                                    setFieldValue('inputArtist', e.target.value);
+                                }}
+                            />
+                        </Form>
+                    )}
                 </Formik>
             </SearchContainer>
             <ArtistContainer visible={recentVisible}>
@@ -162,7 +182,6 @@ export default function Principal() {
                 </Grid>
             </ArtistContainer>
             <ArtistContainer visible={!recentVisible}>
-                {console.log('recent Visible', recentVisible)}
                 <Title>{`Resultados encontrados para "${artistSearched}"`}</Title>
                 <Grid>
                     {albums && albums.map((album) => (

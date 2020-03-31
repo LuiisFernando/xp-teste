@@ -1,4 +1,4 @@
-import { SET_TOKEN, GET_TOKEN, RESET_TOKEN } from '../constant/types';
+import { SET_TOKEN, GET_TOKEN, RESET_TOKEN } from '../constants/types';
 
 export function setToken(token) {
     return {

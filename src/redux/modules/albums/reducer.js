@@ -1,4 +1,4 @@
-import { ADD_ALBUMSEARCHED, GET_ALBUMSSEARCHED } from '../constant/types';
+import { ADD_ALBUMSEARCHED, GET_ALBUMSSEARCHED } from '../constants/types';
 
 const initialStateAlbumsSearched = {
     albums: []
@@ -7,7 +7,8 @@ const initialStateAlbumsSearched = {
 export default function albumSearchedReducer(state = initialStateAlbumsSearched, action) {
     switch(action.type) {
         case ADD_ALBUMSEARCHED:
-            if (state.albums && !state.albums.includes(action.payload)) {
+            const albumlocated = state.albums.find(x => x.id === action.payload.id);
+            if (state.albums && !albumlocated) {
                 return {
                     ...state,
                     albums: [...state.albums, action.payload]

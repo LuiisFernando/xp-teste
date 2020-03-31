@@ -1,7 +1,6 @@
-import { ADD_ALBUMSEARCHED, GET_ALBUMSSEARCHED } from '../constant/types';
+import { ADD_ALBUMSEARCHED, GET_ALBUMSSEARCHED } from '../constants/types';
 
 export function AddAlbumSearched(album) {
-    console.log(album);
     return {
         type: ADD_ALBUMSEARCHED,
         payload: album

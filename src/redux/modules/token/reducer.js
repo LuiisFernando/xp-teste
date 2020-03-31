@@ -1,4 +1,4 @@
-import { GET_TOKEN, SET_TOKEN, RESET_TOKEN } from '../constant/types';
+import { GET_TOKEN, SET_TOKEN, RESET_TOKEN } from '../constants/types';
 
 const initialStateToken = {
     token: null
