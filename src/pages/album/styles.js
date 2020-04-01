@@ -28,8 +28,16 @@ export const BackContainer = styled.div`
         margin-right: 15px; 
     }
 
-    @media (max-width: 414px) {
+    @media (min-width: 320px) and (max-width: 414px)  {
         margin: 20px 50px 0 50px;
+    }
+
+    @media (min-width: 480px) and (max-width: 768px) {
+        margin: 20px 0 0 15px;
+    }
+
+    @media (min-width: 780px) and (max-width: 1024px) {
+        margin: 40px 0px 0 20px;
     }
 `;
 
@@ -39,11 +47,19 @@ export const AlbumContainer = styled.div`
     flex-direction: row;
     max-width: 1200px;
 
-    @media (max-width: 414px) {
+    @media (min-width: 320px) and (max-width: 414px) {
         /* margin: 50px 150px 0 150px; */
         margin: 0;
         margin-top: 20px;
         flex-direction: column;
+    }
+
+    @media (min-width: 480px) and (max-width: 768px) {
+        margin: 40px 10px 0 10px;
+    }
+
+    @media (min-width: 780px) and (max-width: 1024px) {
+        margin: 30px 20px 0 20px;
     }
 `;
 
@@ -103,15 +119,13 @@ export const TrackNumber = styled.span`
     padding: 0 20px 0 0;
     width: 20px;
     height: 20px;
-    
-    /* &:hover {
-        visibility: hidden;
-    } */
+    color: ${props => (props.isPlaying ? '#1aa44a' : '#999999')};
 `;
 
 export const TrackName = styled.span`
-    color: #FAFAFA;
     font-weight: 500;
+
+    color: ${props => (props.isPlaying ? '#1aa44a' : '#FAFAFA')};
 `;
 
 export const TrackTime = styled.span`

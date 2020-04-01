@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import Sound from 'react-sound';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlayCircle } from '@fortawesome/free-solid-svg-icons'
+import { faPlayCircle, faPauseCircle } from '@fortawesome/free-solid-svg-icons'
 
 import { millisToMinutesAndSeconds } from '../../helper/util';
 
@@ -41,6 +41,8 @@ export default function Album() {
 
     const spotify = new SpotifyWebApi();
 
+    const trackPlaying = null;
+
     useEffect(() => {
         async function loadAlbumInfo() {
             try {
@@ -50,7 +52,7 @@ export default function Album() {
     
                     const response = await spotify.getAlbum(albumId);
     
-                    // console.log('response >>> ', response);
+                    console.log('response >>> ', response);
 
                     response.tracks.items.map(musi => {
                         console.log(musi.preview_url)
@@ -74,11 +76,18 @@ export default function Album() {
     }, [albumId]);
     
     function handleplay(track) {
+        pausarMusicas();
+
         setUrl(track.preview_url);
         setStatus(Sound.status.PLAYING)
+
+        var musisss = album.tracks.items.find(x => x.id === track.id);
+
+        musisss.isPlaying = true;
     }
 
-    function handlePause() {
+    function handlePause(track) {
+        track.isPlaying = false;
         setStatus(Sound.status.PAUSE);
     }
 
@@ -86,8 +95,13 @@ export default function Album() {
         setStatus(Sound.status.RESUME);
     }
 
-    function mouseOver(track) {
-        console.log('passou em cima');
+    function pausarMusicas() {
+        album.tracks.items.map(track => {
+            if (track.isPlaying) {
+                handlePause(track);
+            }
+            return track;
+        });
     }
     
     return (
@@ -104,6 +118,7 @@ export default function Album() {
                             <Sound 
                                 url={url}
                                 playStatus={status}
+                                onFinishedPlaying={pausarMusicas}
                             />
                         )}
                         <Capa>
@@ -117,12 +132,15 @@ export default function Album() {
                                 <li key={index}>
                                     <TrackContainer>
                                         <div>
-                                            {/* <TrackNumber onClick={() => handleplay(track)}>{track.track_number}.</TrackNumber> */}
-                                            <TrackNumber onMouseOver={() => mouseOver(track)}>
+                                            <TrackNumber isPlaying={track.isPlaying}>
                                                 {track.track_number}.
-                                                <FontAwesomeIcon icon={faPlayCircle} onClick={() => handleplay(track)} />
+                                                {track.isPlaying ? (
+                                                    <FontAwesomeIcon color="#999999" icon={faPauseCircle} onClick={() => handlePause(track)} />
+                                                    ) : (
+                                                    <FontAwesomeIcon  color="#999999" icon={faPlayCircle} onClick={() => handleplay(track)} />
+                                                )}
                                             </TrackNumber>
-                                            <TrackName onClick={handlePause}>{track.name}</TrackName>
+                                            <TrackName isPlaying={track.isPlaying}>{track.name}</TrackName>
                                         </div>
                                         <TrackTime>{millisToMinutesAndSeconds(track.duration_ms)}</TrackTime>
                                     </TrackContainer>

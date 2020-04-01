@@ -25,8 +25,16 @@ export const SearchContainer = styled.div`
         flex-direction: column;
         margin: 0 200px 0 200px;
 
-        @media (max-width: 414px) {
+        @media (min-width: 320px) and (max-width: 414px) {
             margin: 0 50px 0 50px;
+        }
+
+        @media (max-width: 768px) {
+            margin: 50px 60px 0 30px;
+        }
+
+        @media (min-width: 780px) and (max-width: 1024px) {
+            margin: 50px 20px 0 50px;
         }
     }
 
@@ -57,9 +65,17 @@ export const ArtistContainer = styled.div`
     margin: 100px 200px 0 200px;
     display: ${props => (props.visible ? 'flex' : 'none')};
 
-    @media (max-width: 414px) {
+    @media (min-width: 320px) and (max-width: 414px) {
         margin: 100px 50px 0 30px;
     }
+
+    @media (min-width: 450px) and (max-width: 768px) {
+        margin: 100px 50px 0 30px;
+    }
+
+    @media (min-width: 780px) and (max-width: 1024px) {
+            margin: 100px 20px 0 50px;
+        }
 `;
 
 
@@ -99,5 +115,9 @@ export const Grid = styled.div`
 
     @media (max-width: 414px) {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 768px) and (max-width: 1024px) {
+        grid-template-columns: repeat(4, 1fr);
     }
 `;
