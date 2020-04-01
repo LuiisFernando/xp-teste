@@ -24,6 +24,10 @@ export const SearchContainer = styled.div`
         display: flex;
         flex-direction: column;
         margin: 0 200px 0 200px;
+
+        @media (max-width: 414px) {
+            margin: 0 50px 0 50px;
+        }
     }
 
     label {
@@ -48,6 +52,10 @@ export const ArtistContainer = styled.div`
     flex-direction: column;
     margin: 100px 200px 0 200px;
     display: ${props => (props.visible ? 'flex' : 'none')};
+
+    @media (max-width: 414px) {
+        margin: 100px 50px 0 30px;
+    }
 `;
 
 
@@ -84,4 +92,8 @@ export const Grid = styled.div`
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-gap: 20px;
+
+    @media (max-width: 414px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
 `;

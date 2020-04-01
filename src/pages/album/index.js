@@ -5,12 +5,14 @@ import { toast } from "react-toastify";
 
 import Sound from 'react-sound';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlayCircle } from '@fortawesome/free-solid-svg-icons'
+
 import { millisToMinutesAndSeconds } from '../../helper/util';
 
 import { store } from '../../redux';
 
 import icone from '../../assets/icon2.png';
-import play from '../../assets/play.svg';
 
 import { 
     Container,
@@ -38,7 +40,7 @@ export default function Album() {
     const [status, setStatus] = useState(Sound.status.STOPPED);
 
     const spotify = new SpotifyWebApi();
-    
+
     useEffect(() => {
         async function loadAlbumInfo() {
             try {
@@ -72,7 +74,6 @@ export default function Album() {
     }, [albumId]);
     
     function handleplay(track) {
-        console.log(track);
         setUrl(track.preview_url);
         setStatus(Sound.status.PLAYING)
     }
@@ -84,12 +85,15 @@ export default function Album() {
     function handleResume() {
         setStatus(Sound.status.RESUME);
     }
+
+    function mouseOver(track) {
+        console.log('passou em cima');
+    }
     
     return (
         <Container>
             <Image src={icone} alt="icon" onClick={handleResume} />
             <BackContainer onClick={() => history.goBack()}>
-                {/* {"< Voltar"} */}
                 <span>{"<"}</span>
                 {"Voltar"}
             </BackContainer>
@@ -113,7 +117,11 @@ export default function Album() {
                                 <li key={index}>
                                     <TrackContainer>
                                         <div>
-                                            <TrackNumber onClick={() => handleplay(track)}>{track.track_number}.</TrackNumber>
+                                            {/* <TrackNumber onClick={() => handleplay(track)}>{track.track_number}.</TrackNumber> */}
+                                            <TrackNumber onMouseOver={() => mouseOver(track)}>
+                                                {track.track_number}.
+                                                <FontAwesomeIcon icon={faPlayCircle} onClick={() => handleplay(track)} />
+                                            </TrackNumber>
                                             <TrackName onClick={handlePause}>{track.name}</TrackName>
                                         </div>
                                         <TrackTime>{millisToMinutesAndSeconds(track.duration_ms)}</TrackTime>

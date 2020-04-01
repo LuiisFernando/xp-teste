@@ -23,9 +23,13 @@ export const BackContainer = styled.div`
     cursor: pointer;
     color: #FAFAFA;
     font-size: 15px;
-    
+
     span {
         margin-right: 15px; 
+    }
+
+    @media (max-width: 414px) {
+        margin: 20px 50px 0 50px;
     }
 `;
 
@@ -34,6 +38,13 @@ export const AlbumContainer = styled.div`
     display: flex;
     flex-direction: row;
     max-width: 1200px;
+
+    @media (max-width: 414px) {
+        /* margin: 50px 150px 0 150px; */
+        margin: 0;
+        margin-top: 20px;
+        flex-direction: column;
+    }
 `;
 
 export const Capa = styled.div`
@@ -69,6 +80,10 @@ export const Tracks = styled.div`
     padding-left: 50px;
     display: flex;
     flex: 1;
+
+    @media (max-width: 414px) {
+        padding-left: 10px;
+    }
 `;
 
 export const TrackList = styled.ul`
@@ -78,13 +93,19 @@ export const TrackList = styled.ul`
     flex: 1;
 
     li {
-        padding: 0 0 20px 0;
+        padding: 0 10px 20px 0;
     }
 
 `;
 
 export const TrackNumber = styled.span`
     padding: 0 20px 0 0;
+    width: 20px;
+    height: 20px;
+    
+    /* &:hover {
+        visibility: hidden;
+    } */
 `;
 
 export const TrackName = styled.span`
