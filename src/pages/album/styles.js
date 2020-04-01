@@ -83,6 +83,7 @@ export const Tracks = styled.div`
 
     @media (max-width: 414px) {
         padding-left: 10px;
+        margin-top: 40px;
     }
 `;
 

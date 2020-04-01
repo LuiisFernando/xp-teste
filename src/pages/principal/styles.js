@@ -44,6 +44,10 @@ export const SearchContainer = styled.div`
         font-size: 50px;
         margin-top: 20px;
         color: #FAFAFA;
+
+        @media (max-width: 414px) {
+            font-size: 20px;
+        }
     }
 `;
 
