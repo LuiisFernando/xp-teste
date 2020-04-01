@@ -19,13 +19,18 @@ export const Image = styled.img`
 `;
 
 export const BackContainer = styled.div`
-    margin-top: 10px;
-    margin: 20px 200px 0 200px;
+    margin: 0 200px 0 200px;
     cursor: pointer;
+    color: #FAFAFA;
+    font-size: 15px;
+    
+    span {
+        margin-right: 15px; 
+    }
 `;
 
 export const AlbumContainer = styled.div`
-    margin: 40px 150px 0 200px;
+    margin: 50px 150px 0 200px;
     display: flex;
     flex-direction: row;
     max-width: 1200px;

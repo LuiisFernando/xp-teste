@@ -88,7 +88,11 @@ export default function Album() {
     return (
         <Container>
             <Image src={icone} alt="icon" onClick={handleResume} />
-            <BackContainer onClick={() => history.goBack()}>{"< Voltar"}</BackContainer>
+            <BackContainer onClick={() => history.goBack()}>
+                {/* {"< Voltar"} */}
+                <span>{"<"}</span>
+                {"Voltar"}
+            </BackContainer>
             <AlbumContainer>
                 {album && (
                     <>
@@ -110,9 +114,7 @@ export default function Album() {
                                     <TrackContainer>
                                         <div>
                                             <TrackNumber onClick={() => handleplay(track)}>{track.track_number}.</TrackNumber>
-                                            {/* <img src={play} alt="playIcon" width="25" height="25" style={{ color: '#FFF' }} /> */}
                                             <TrackName onClick={handlePause}>{track.name}</TrackName>
-                                            {/* <span>{track.preview_url}</span> */}
                                         </div>
                                         <TrackTime>{millisToMinutesAndSeconds(track.duration_ms)}</TrackTime>
                                     </TrackContainer>
