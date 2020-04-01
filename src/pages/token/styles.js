@@ -5,17 +5,23 @@ export const Container = styled.div`
     flex: 1;
     flex-direction: column;
     align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    justify-content: center;
 
     div {
         display: flex;
         flex-direction: column;
         max-width: 800px;
         width: 800px;
+
+        @media (min-width: 320px) and (max-width: 414px) {
+            max-width: 300px;
+            width: 300px;
+        }
+
+        @media (min-width: 480px) and (max-width: 768px) {
+            max-width: 700px;
+            width: 700px;
+        }
     }
 
     input {
